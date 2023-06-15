@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Notbad"
 include ':app'
+include ':lib-common'
+include ':feature-video'
+include ':feature-wallpaper'

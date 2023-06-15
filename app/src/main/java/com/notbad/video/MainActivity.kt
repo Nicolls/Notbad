@@ -1,18 +1,22 @@
 package com.notbad.video
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.notbad.feature.wallpaper.FooUsage
 import com.notbad.video.data.DataHandlerImpl
 import com.notbad.video.data.IDataCallBack
 import com.notbad.video.data.IDataHandler
+import com.notbad.video.data.VideoRepository
 import com.notbad.video.network.RetrofitService
 import com.notbad.video.view.MainFragment
 import com.notbad.video.view.SubFragment
+import com.notbad.video.viewmodel.VideoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 private const val TAG = "MainActivity"
 
@@ -32,6 +36,13 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var retrofitService: RetrofitService
 
+    @Inject
+    lateinit var retrofitService2: RetrofitService
+
+    @Inject
+    lateinit var repository: VideoRepository
+
+    lateinit var videoViewModel: VideoViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,14 +50,20 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate ${dataHandler.hashCode()}")
         mainFragment = MainFragment()
         subFragment = SubFragment()
+        videoViewModel = ViewModelProvider(this)[VideoViewModel::class.java]
+        videoViewModel.printCode()
     }
 
     fun onTest(view: View) {
-        Log.d(TAG, "onTest")
+        Log.d(
+            TAG,
+            "onTest s1:${dataHandler.hashCode()} s2:${repository.localDataSource.dataHandler.hashCode()} "
+        )
+        repository.remoteDataSource.dataHandler.handleData("yes iam ")
         retrofitService.startRequest("my service")
         dataCallBack.onCall("hello")
         dataHandler.handleData("yes")
-//        startActivity(Intent(this, SearchActivity::class.java))
+        FooUsage.fooSay(this)
     }
 
     fun onReplace(view: View) {

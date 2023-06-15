@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.notbad.video.R
 import com.notbad.video.data.IDataHandler
+import com.notbad.video.network.RetrofitService
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -18,7 +19,8 @@ private const val TAG = "MainFragment"
 class SubFragment : Fragment() {
     @Inject
     lateinit var dataHandler: IDataHandler
-
+    @Inject
+    lateinit var retrofitService: RetrofitService
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAG, "onAttach context")
@@ -26,7 +28,7 @@ class SubFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate ${dataHandler.hashCode()}")
+        Log.d(TAG, "onCreate ${retrofitService.hashCode()}")
         dataHandler.handleData("hello sub fragment")
     }
 
