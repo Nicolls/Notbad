@@ -1,13 +1,16 @@
 package com.notbad.video
 
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.notbad.feature.wallpaper.FooUsage
+import com.notbad.lib.common.LogUtils
 import com.notbad.video.data.DataHandlerImpl
-import com.notbad.video.data.IDataCallBack
 import com.notbad.video.data.IDataHandler
 import com.notbad.video.data.VideoRepository
 import com.notbad.video.network.RetrofitService
@@ -31,9 +34,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var dataHandler: IDataHandler
 
     @Inject
-    lateinit var dataCallBack: IDataCallBack
-
-    @Inject
     lateinit var retrofitService: RetrofitService
 
     @Inject
@@ -47,31 +47,85 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         (dataHandler as DataHandlerImpl).handleType = "Main Handle"
-        Log.d(TAG, "onCreate ${dataHandler.hashCode()}")
-        mainFragment = MainFragment()
-        subFragment = SubFragment()
-        videoViewModel = ViewModelProvider(this)[VideoViewModel::class.java]
-        videoViewModel.printCode()
+        LogUtils.d(TAG, "onCreate ${savedInstanceState} ${hashCode()}")
+//        mainFragment = MainFragment()
+//        subFragment = SubFragment()
+//        videoViewModel = ViewModelProvider(this)[VideoViewModel::class.java]
+//        videoViewModel.printCode()
     }
 
     fun onTest(view: View) {
-        Log.d(
+        LogUtils.d(
             TAG,
-            "onTest s1:${dataHandler.hashCode()} s2:${repository.localDataSource.dataHandler.hashCode()} "
+            "onTest s1:${dataHandler.hashCode()} s2:${repository.dataHandler.hashCode()} "
         )
-        repository.remoteDataSource.dataHandler.handleData("yes iam ")
+        repository.dataHandler.handleData("yes iam ")
         retrofitService.startRequest("my service")
-        dataCallBack.onCall("hello")
         dataHandler.handleData("yes")
-        FooUsage.fooSay(this)
+        val intent = Intent("com.notbad.search")
+        startActivity(intent)
     }
 
     fun onReplace(view: View) {
-        Log.d(TAG, "onReplace")
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-        val replaceFragment = if (currentFragment is MainFragment) subFragment else mainFragment
-        val fragmentTransition = supportFragmentManager.beginTransaction()
-        fragmentTransition.replace(R.id.fragment_container, replaceFragment)
-        fragmentTransition.commitNow()
+        LogUtils.d(TAG, "onReplace")
+//        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+//        val replaceFragment = if (currentFragment is MainFragment) subFragment else mainFragment
+//        val fragmentTransition = supportFragmentManager.beginTransaction()
+//        fragmentTransition.replace(R.id.fragment_container, replaceFragment)
+//        fragmentTransition.commitNow()
     }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        LogUtils.d(TAG, "onNewIntent ${hashCode()}")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        LogUtils.d(TAG, "onRestart ${hashCode()}")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        LogUtils.d(TAG, "onStart ${hashCode()}")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LogUtils.d(TAG, "onResume ${hashCode()}" )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LogUtils.d(TAG, "onPause ${hashCode()}")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LogUtils.d(TAG, "onStop ${hashCode()}")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LogUtils.d(TAG, "onDestroy ${hashCode()}")
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        LogUtils.d(TAG, "onConfigurationChanged ${hashCode()} $newConfig")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        LogUtils.d(TAG, "onSaveInstanceState ${hashCode()} $outState")
+    }
+
+    override fun onRestoreInstanceState(
+        savedInstanceState: Bundle?,
+        persistentState: PersistableBundle?
+    ) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState)
+        LogUtils.d(TAG, "onRestoreInstanceState ${hashCode()} $savedInstanceState")
+    }
+
 }

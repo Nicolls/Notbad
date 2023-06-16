@@ -2,6 +2,7 @@ package com.notbad.video
 
 import android.app.Application
 import android.util.Log
+import com.notbad.lib.common.LogUtils
 import dagger.hilt.android.HiltAndroidApp
 
 private const val TAG = "NotBadApplication"
@@ -11,7 +12,7 @@ class NotBadApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG, "onCreate")
+        LogUtils.d(TAG, "onCreate")
     }
 
 }

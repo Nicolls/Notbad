@@ -2,6 +2,7 @@ package com.notbad.feature.video
 
 import android.util.Log
 import com.notbad.lib.common.IFoo
+import com.notbad.lib.common.LogUtils
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -13,7 +14,7 @@ private const val TAG = "VideoFoo"
 
 class VideoFoo : IFoo {
     override fun say(msg: String) {
-        Log.d(TAG, "video foo")
+        LogUtils.d(TAG, "video foo")
     }
 
     /**

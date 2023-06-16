@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 class VideoRepository @Inject constructor(
     val localDataSource: LocalDataSource,
-    val remoteDataSource: RemoteDataSource
+    val dataHandler: IDataHandler
 ) {
 
 }
