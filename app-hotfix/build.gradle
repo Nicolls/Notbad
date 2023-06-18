@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.notbad.main'
+    namespace 'com.notbad.hotfix'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.notbad.main"
+        applicationId "com.notbad.hotfix"
         minSdk 21
         targetSdk 33
         versionCode 1
