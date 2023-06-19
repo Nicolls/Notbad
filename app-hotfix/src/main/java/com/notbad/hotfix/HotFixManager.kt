@@ -1,13 +1,13 @@
 package com.notbad.hotfix
 
 import android.content.Context
-import android.os.Environment
 import com.notbad.lib.common.LogUtils
 import dalvik.system.DexClassLoader
 import dalvik.system.PathClassLoader
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.InputStream
 import java.lang.reflect.Array
 
 /**
@@ -15,15 +15,19 @@ import java.lang.reflect.Array
  */
 object HotFixManager {
     private const val TAG = "HotFixManager"
+
     fun loadDex(context: Context) {
-        val dexPath = "${Environment.getExternalStorageDirectory().absolutePath}/update.apk"
+        val dexFileName = "update.apk"
+        // 加载外部存储器上的
+        val dexPath = "${context.getExternalFilesDir(null)?.absolutePath}/$dexFileName"
         LogUtils.d(TAG, "dexPath:$dexPath")
         val dexFile = File(dexPath)
         if (!dexFile.exists()) {
             LogUtils.w(TAG, "dex file not found $dexPath")
             return
         }
-        val dexFileName = dexFile.name
+        LogUtils.d(TAG, "load dex file from storage")
+        val ips = FileInputStream(dexFile)
         // 把这个dex弄到我们的cache code目录下
         val cacheDexFile = File(context.cacheDir, dexFileName)
         if (cacheDexFile.exists()) {
@@ -31,37 +35,36 @@ object HotFixManager {
             LogUtils.i(TAG, "delete cache dex $d")
         }
         LogUtils.i(TAG, "copy dex to cache ${cacheDexFile.path}")
-        val ips = FileInputStream(dexFile)
         val ops = FileOutputStream(cacheDexFile)
         try {
-            var len: Int
+            var len: Int = 0
             val buffer = ByteArray(1024)
             while (ips.read(buffer).also { len = it } != -1) {
                 ops.write(buffer, 0, len)
             }
             ops.flush()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
-        }finally {
+        } finally {
             try {
 
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-        if(!cacheDexFile.exists()){
+        if (!cacheDexFile.exists()) {
             LogUtils.i(TAG, "copy fail!")
-        } else{
+        } else {
             LogUtils.i(TAG, "copy success!")
             handleDex(context, cacheDexFile.absolutePath)
         }
     }
 
-    private fun handleDex(context:Context, dexPath:String){
+    private fun handleDex(context: Context, dexPath: String) {
         try {
             // 首先获取PathClassLoader加载的系统类等
             val pathClassLoader = context.classLoader as PathClassLoader
-            val baseDexClass =Class.forName("dalvik.system.BaseDexClassLoader")
+            val baseDexClass = pathClassLoader.javaClass.superclass
             val pathListField = baseDexClass.getDeclaredField("pathList")
             pathListField.isAccessible = true
             val pathListObject = pathListField.get(pathClassLoader)
@@ -109,7 +112,7 @@ object HotFixManager {
             elementsField[pathListObject] = newElementsArray
 
 
-        }catch (e:java.lang.Exception){
+        } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
 
