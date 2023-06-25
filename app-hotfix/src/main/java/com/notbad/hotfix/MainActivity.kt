@@ -50,9 +50,8 @@ class MainActivity : AppCompatActivity() {
 
     fun onLoad(view: View) {
         LogUtils.d(TAG, "onLoad")
-        val dexPath = "${getExternalFilesDir(null)?.absolutePath}/update.apk"
         HotFixManager.loadDex(this)
-//        HotFixManager.reCreate(this)
+        HotFixManager.reCreate(this)
     }
 
     override fun onNewIntent(intent: Intent?) {

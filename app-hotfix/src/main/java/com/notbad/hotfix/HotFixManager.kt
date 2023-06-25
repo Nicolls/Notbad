@@ -19,14 +19,23 @@ object HotFixManager {
     private const val TAG = "HotFixManager"
 
     fun loadDex(context: Context) {
+
+        val dexPath = exToCache(context)
+        dexPath?.let {
+            handleDex(context,dexPath)
+        }
+    }
+
+    private fun exToCache(context: Context):String?{
         val dexFileName = "update.apk"
+
         // 加载外部存储器上的
         val dexPath = "${context.getExternalFilesDir(null)?.absolutePath}/$dexFileName"
         LogUtils.d(TAG, "dexPath:$dexPath")
         val dexFile = File(dexPath)
         if (!dexFile.exists()) {
             LogUtils.w(TAG, "dex file not found $dexPath")
-            return
+            return null
         }
         LogUtils.d(TAG, "load dex file from storage")
         val ips = FileInputStream(dexFile)
@@ -47,6 +56,7 @@ object HotFixManager {
             ops.flush()
         } catch (e: Exception) {
             e.printStackTrace()
+            return null
         } finally {
             try {
 
@@ -54,11 +64,12 @@ object HotFixManager {
                 e.printStackTrace()
             }
         }
-        if (!cacheDexFile.exists()) {
+        return if (!cacheDexFile.exists()) {
             LogUtils.i(TAG, "copy fail!")
+            null
         } else {
             LogUtils.i(TAG, "copy success!")
-            handleDex(context, cacheDexFile.absolutePath)
+            cacheDexFile.absolutePath
         }
     }
 
@@ -117,8 +128,7 @@ object HotFixManager {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-        hotFixResources(context,dexPath)
-        hookResources(context,dexPath)
+//        hotFixResources(context,dexPath)
     }
 
     /**
@@ -156,10 +166,25 @@ object HotFixManager {
     }
 
     /**
-     * 资源hook插件化，插件化是增加资源，因为我们不能作替换，而是增加
+     * 资源hook插件化，插件化是增加资源，因为我们不能作替换，而是增加另一个apk的资源
      */
-    fun hookResources(context: Context,dexPath: String){
-
+    fun hookResources(context: Context):Resources?{
+        LogUtils.d(TAG, "hookResources ${context.applicationContext}")
+        val dexPath = exToCache(context)
+        dexPath?.run {
+            try {
+                val newAssertManager = AssetManager::class.java.getConstructor().newInstance()
+                val addAssetPathMethod = newAssertManager::class.java.getDeclaredMethod("addAssetPath", String::class.java)
+                addAssetPathMethod.isAccessible = true
+                val result=addAssetPathMethod.invoke(newAssertManager,dexPath)
+                LogUtils.d(TAG, "result $result")
+                val res = Resources(newAssertManager,context.resources.displayMetrics,context.resources.configuration)
+                return res
+            }catch (e:Exception) {
+                LogUtils.e(TAG, "hotFixResource error", e)
+            }
+        }
+        return null
     }
 
 
