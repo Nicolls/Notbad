@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'com.notbad.hotfix.plugin'
-    compileSdk 33
+    compileSdk COMPILE_VERSION as int
 
     defaultConfig {
+        minSdk MIN_VERSION as int
+        targetSdk TARGET_VERSION as int
         applicationId "com.notbad.hotfix.plugin"
-        minSdk 21
-        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -35,14 +35,14 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    // Java language implementation
+    implementation "androidx.activity:activity:$ACTIVITY_VERSION"
+    // Kotlin
+    implementation "androidx.activity:activity-ktx:$ACTIVITY_VERSION"
+    implementation "androidx.appcompat:appcompat:${APP_COMPACT_VERSION}"
+    implementation "androidx.core:core-ktx:${KTX_CORE_VERSION}"
+    implementation "androidx.constraintlayout:constraintlayout:${CONSTRAINT_LAYOUT_VERSION}"
+    implementation "com.google.android.material:material:${MATERIAL_VERSION}"
     implementation project(":lib-common")
 }
 

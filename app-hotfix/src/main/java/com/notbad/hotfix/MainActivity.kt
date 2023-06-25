@@ -6,8 +6,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.notbad.hotfix.handler.Calculate
+import com.notbad.hotfix.plugin.SecondActivity
 import com.notbad.lib.common.LogUtils
-import java.lang.Exception
 
 
 private const val TAG = "MainActivity"
@@ -22,14 +22,18 @@ class MainActivity : AppCompatActivity() {
 
     fun onTest(view: View) {
         LogUtils.d(TAG, "onTest ")
-        HotFixManager.reCreate(this)
-        val intent = Intent("com.notbad.hotfix.plugin.second")
-        try {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
+        testPlaceHolderPlugin()
+    }
+
+    private fun testPlaceHolderPlugin(){
+        // 广播
+//        val intent = Intent("com.notbad.hotfix.plugin.receiver")
+//        sendBroadcast(intent)
+//        PluginReceiverManager.register(this)
+        // activity
+        val intent = Intent(this, SecondActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
 
@@ -46,8 +50,9 @@ class MainActivity : AppCompatActivity() {
 
     fun onLoad(view: View) {
         LogUtils.d(TAG, "onLoad")
+        val dexPath = "${getExternalFilesDir(null)?.absolutePath}/update.apk"
         HotFixManager.loadDex(this)
-        HotFixManager.reCreate(this)
+//        HotFixManager.reCreate(this)
     }
 
     override fun onNewIntent(intent: Intent?) {

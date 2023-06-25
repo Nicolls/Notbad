@@ -1,6 +1,7 @@
 package com.notbad.hotfix
 
 import android.app.Application
+import android.content.res.Resources
 import android.util.Log
 import com.notbad.lib.common.LogUtils
 
@@ -13,5 +14,10 @@ class NotBadApplication : Application() {
         LogUtils.d(TAG, "onCreate")
         HotFixManager.loadDex(this) // 每次onCreate的时候都要把我们的新dex加载一下，放到前面
     }
+
+    override fun getResources(): Resources {
+        return super.getResources()
+    }
+
 
 }

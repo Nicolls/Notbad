@@ -3,13 +3,12 @@ package com.notbad.hotfix.plugin
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.notbad.hotfix.R
 import com.notbad.lib.common.LogUtils
-
-private const val TAG = "PluginSecondActivity"
+private const val TAG = "SecondActivity"
 
 /**
  * 插桩方式实现插件化，即将在宿主app中，先创建要插件app所需要的activity等组件，
@@ -22,21 +21,17 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         LogUtils.d(TAG, "onCreate ")
         setContentView(R.layout.activity_second)
-        window.decorView.setBackgroundColor(Color.BLUE)
+        window.decorView.setBackgroundColor(Color.WHITE)
     }
 
-    fun onTest(view: View) {
-        LogUtils.d(TAG, "onTest ")
-        startActivity(Intent(this, MainActivity::class.java))
-    }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        LogUtils.d(TAG, "onNewIntent ${hashCode()}")
+        LogUtils.d(com.notbad.hotfix.plugin.TAG, "onNewIntent ${hashCode()}")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        LogUtils.d(TAG, "onDestroy ${hashCode()}")
+        LogUtils.d(com.notbad.hotfix.plugin.TAG, "onDestroy ${hashCode()}")
     }
 }

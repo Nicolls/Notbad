@@ -2,13 +2,14 @@ package com.notbad.hotfix
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.AssetManager
+import android.content.res.Resources
 import com.notbad.lib.common.LogUtils
 import dalvik.system.DexClassLoader
 import dalvik.system.PathClassLoader
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.InputStream
 import java.lang.reflect.Array
 
 /**
@@ -116,7 +117,8 @@ object HotFixManager {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-
+        hotFixResources(context,dexPath)
+        hookResources(context,dexPath)
     }
 
     /**
@@ -129,6 +131,35 @@ object HotFixManager {
         context.startActivity(intent);
         //杀掉以前进程
         android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    /**
+     * 资源热修复，因为热修复是对同一个apk来讲的，所以，我们只需要将新apk的资源替代的掉旧的apk资源即可
+     */
+    fun hotFixResources(context: Context,dexPath: String){
+        try {
+            val newAssertManager = AssetManager::class.java.getConstructor().newInstance()
+            val addAssetPathMethod = newAssertManager::class.java.getDeclaredMethod("addAssetPath", String::class.java)
+            addAssetPathMethod.isAccessible = true
+            val result=addAssetPathMethod.invoke(newAssertManager,dexPath)
+            LogUtils.d(TAG, "result $result")
+            val res = context.resources
+            val mResourcesImplFiled = Resources::class.java.getDeclaredField("mResourcesImpl")
+            mResourcesImplFiled.isAccessible = true
+            val resourceImpl = mResourcesImplFiled.get(res)
+            val assetField = resourceImpl::class.java.getDeclaredField("mAssets")
+            assetField.isAccessible = true
+            assetField.set(resourceImpl,newAssertManager)
+        }catch (e:Exception) {
+            LogUtils.e(TAG, "hotFixResource error", e)
+        }
+    }
+
+    /**
+     * 资源hook插件化，插件化是增加资源，因为我们不能作替换，而是增加
+     */
+    fun hookResources(context: Context,dexPath: String){
+
     }
 
 

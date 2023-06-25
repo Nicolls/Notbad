@@ -24,10 +24,6 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="android:windowBackgroundBlurRadius">10dp</item>
-        <item name="android:windowBackground">@drawable/my_bg</item>
-        <item name="android:windowBlurBehindEnabled">true</item>
-        <item name="android:windowBlurBehindRadius">10px</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
