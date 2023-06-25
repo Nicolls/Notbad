@@ -1,6 +1,7 @@
 package com.notbad.hotfix
 
 import android.content.Context
+import android.content.Intent
 import com.notbad.lib.common.LogUtils
 import dalvik.system.DexClassLoader
 import dalvik.system.PathClassLoader
@@ -116,6 +117,18 @@ object HotFixManager {
             e.printStackTrace()
         }
 
+    }
+
+    /**
+     * 重启应用
+     */
+    fun reCreate(context: Context){
+        LogUtils.d(TAG, "reCreate")
+        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+        //杀掉以前进程
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
 

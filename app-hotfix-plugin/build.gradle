@@ -6,17 +6,17 @@ plugins {
 }
 
 android {
-    namespace 'com.notbad.main'
+    namespace 'com.notbad.hotfix.plugin'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.notbad.main"
+        applicationId "com.notbad.hotfix.plugin"
         minSdk 21
         targetSdk 33
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitR   unner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
