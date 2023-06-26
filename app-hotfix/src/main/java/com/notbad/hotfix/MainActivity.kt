@@ -1,5 +1,6 @@
 package com.notbad.hotfix
 
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -22,7 +23,14 @@ class MainActivity : AppCompatActivity() {
 
     fun onTest(view: View) {
         LogUtils.d(TAG, "onTest ")
-        testPlaceHolderPlugin()
+        testHookAms()
+    }
+
+    private fun testHookAms (){
+        val intent = Intent()
+        intent.setComponent(ComponentName("com.notbad.hotfix.plugin","com.notbad.hotfix.plugin.MainActivity"))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun testPlaceHolderPlugin(){
@@ -50,8 +58,9 @@ class MainActivity : AppCompatActivity() {
 
     fun onLoad(view: View) {
         LogUtils.d(TAG, "onLoad")
-        HotFixManager.loadDex(this)
-        HotFixManager.reCreate(this)
+//        HotFixManager.loadDex(this)
+        HotFixManager.hookAmsH(this)
+//        HotFixManager.reCreate(this)
     }
 
     override fun onNewIntent(intent: Intent?) {

@@ -128,8 +128,18 @@ object HotFixManager {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
+        hookAmsH(context)
 //        hotFixResources(context,dexPath)
     }
+
+
+
+    fun hookAmsH(context: Context){
+        LogUtils.d(TAG, "hookAmsH")
+        HookManager.getInstance().hookAms(context)
+        HookManager.getInstance().hookHandler(context)
+    }
+
 
     /**
      * 重启应用
