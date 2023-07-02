@@ -4,7 +4,7 @@ public class LogUtils {
     private static final String TAG = "NotBad_";
 
     public static void d(String msg) {
-        d("", msg);
+        System.out.println(msg);
     }
 
     public static void d(String tag, String msg) {
