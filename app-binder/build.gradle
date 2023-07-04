@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-    namespace 'com.notbad.main'
+    namespace 'com.notbad.binder'
     compileSdk COMPILE_VERSION as int
 
     defaultConfig {
         minSdk MIN_VERSION as int
         targetSdk TARGET_VERSION as int
-        applicationId "com.notbad.main"
+        applicationId "com.notbad.binder"
         versionCode 1
         versionName "1.0"
 
@@ -32,9 +32,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     buildFeatures {
         aidl true
     }
+
 }
 
 dependencies {
@@ -47,6 +49,9 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${CONSTRAINT_LAYOUT_VERSION}"
     implementation "com.google.android.material:material:${MATERIAL_VERSION}"
     implementation project(":lib-common")
+    implementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+    implementation "com.squareup.okio:okio:${OKIO_VERSION}"
+
 }
 
 kapt {

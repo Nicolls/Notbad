@@ -14,6 +14,8 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Notbad"
 include ':app'
+include ':app-binder'
+include ':app-component'
 include ':app-hilt'
 include ':app-hotfix'
 include ':app-hotfix-plugin'

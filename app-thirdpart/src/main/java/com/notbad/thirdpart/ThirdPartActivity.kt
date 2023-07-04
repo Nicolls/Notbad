@@ -1,6 +1,7 @@
 package com.notbad.thirdpart
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +23,7 @@ class ThirdPartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         LogUtils.d(TAG, "onCreate")
+        supportActionBar?.hide()
         setContentView(R.layout.activity_main)
 
     }
@@ -29,7 +31,11 @@ class ThirdPartActivity : AppCompatActivity() {
     private val client: OkHttpClient = OkHttpClient()
     fun onTest(view: View) {
         LogUtils.d(TAG, "onTest")
-        postRequest()
+        handlerTest()
+    }
+
+    private fun handlerTest(){
+        Handler().sendEmptyMessage(0)
     }
 
     private fun getRequest() {
