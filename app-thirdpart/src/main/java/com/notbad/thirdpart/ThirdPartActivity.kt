@@ -1,16 +1,20 @@
 package com.notbad.thirdpart
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.notbad.lib.common.LogUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.FormBody
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
 
 /**
  * 三方库
@@ -28,22 +32,49 @@ class ThirdPartActivity : AppCompatActivity() {
 
     }
 
-    private val client: OkHttpClient = OkHttpClient()
+    private val client: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(object : Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+                LogUtils.d(TAG, "app intercept ")
+                val request = chain.request()
+                val response = chain.proceed(request)
+                return response
+            }
+
+        }).addNetworkInterceptor(object : Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+                LogUtils.d(TAG, "network intercept ")
+                val request = chain.request()
+                val response = chain.proceed(request)
+                return response
+            }
+
+
+        })
+        .build()
+
     fun onTest(view: View) {
         LogUtils.d(TAG, "onTest")
-        handlerTest()
-    }
-
-    private fun handlerTest(){
-        Handler().sendEmptyMessage(0)
+        getRequest()
     }
 
     private fun getRequest() {
         lifecycleScope.launch(Dispatchers.IO) {
             val getRequest = Request.Builder().url(GET_URL).get().build()
-            val getResp = client.newCall(getRequest).execute()
-            val getResult = getResp.body?.string()
-            LogUtils.d(TAG, "get:$getResult")
+            LogUtils.d(TAG, "start request ${Thread.currentThread().name}")
+            client.newCall(getRequest).enqueue(object :Callback{
+                override fun onFailure(call: Call, e: IOException) {
+                    LogUtils.d(TAG, "error")
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    LogUtils.d(TAG, "onResponse ${Thread.currentThread().name}")
+                    val getResult = response.body()?.string()
+                    LogUtils.d(TAG, "get:$getResult")
+                }
+
+            })
+            LogUtils.d(TAG, "end request ${Thread.currentThread().name}")
         }
     }
 
@@ -55,7 +86,7 @@ class ThirdPartActivity : AppCompatActivity() {
                 .add("ver_code", "123456").build()
             val postReq = Request.Builder().post(reqBody).url(POST_URL).build()
             val postResp = client.newCall(postReq).execute()
-            val postResult = postResp.body?.string()
+            val postResult = postResp.body()?.string()
             LogUtils.d(TAG, "post result:$postResult")
         }
     }

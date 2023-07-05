@@ -9,12 +9,6 @@ import androidx.annotation.Nullable;
 
 import com.notbad.lib.common.LogUtils;
 
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
 /**
  *
  */
@@ -30,9 +24,6 @@ public class MyIntentService extends IntentService {
         context.startService(intent);
     }
 
-    private static String POST_URL = "https://demo-api.apipost.cn/api/demo/login";
-    private OkHttpClient client = new OkHttpClient();
-
     @Override
     protected void onHandleIntent(Intent intent) {
         /**
@@ -47,17 +38,9 @@ public class MyIntentService extends IntentService {
          *                 }
          */
         LogUtils.d(TAG, "onHandleIntent");
-        RequestBody reqBody = new FormBody.Builder()
-                .add("mobile", "18289454846")
-                .add("ver_code", "123456").build();
-        Request postReq = new Request.Builder().post(reqBody).url(POST_URL).build();
         try {
 
             Thread.sleep(3000);
-            LogUtils.d(TAG, "start to post");
-            Response postResp = client.newCall(postReq).execute();
-            String postResult = postResp.body().string();
-            LogUtils.d(TAG, "post result:" + postResult);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,6 +73,7 @@ public class MyIntentService extends IntentService {
 
     /**
      * intentService的默认实现是return null，说明intentService是不允许绑定的，也就是不允许跨进行IPC
+     *
      * @return
      */
     @Nullable
