@@ -28,6 +28,10 @@
             android:name=".RemoteAidlBinderService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".RemoteCustomHelloService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".BinderComponentActivity"

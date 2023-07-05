@@ -17,7 +17,7 @@ interface IRemoteService {
 
     void setCallBack(IRemoteCallBack remoteCallBack);
 
-    oneway void upgradeStudent(in Student student);
+    Student upgradeStudent(in Student student);
 
     void insertStudent(in Student student);
 

@@ -17,7 +17,8 @@ interface IRemoteService {
 
     void setCallBack(IRemoteCallBack remoteCallBack);
 
-    oneway void upgradeStudent(in Student student); // 使用oneway就不会block客户端
+    Student upgradeStudent(in Student student);
+    // 如果使用oneway就不会block客户端
 
     void insertStudent(in Student student);
 

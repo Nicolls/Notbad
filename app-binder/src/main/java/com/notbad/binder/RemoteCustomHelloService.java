@@ -10,50 +10,15 @@ import com.notbad.lib.common.LogUtils;
 
 /**
  * 默认情况下，服务与服务声明所在的应用运行于同一进程，并且运行于该应用的主线程中，除非定义了:process。
- * 这是一个远程的Service使用aidl来实现
+ * 这是一个远程的Service 自己写binder实现类来实现
  */
-public class RemoteAidlBinderService extends Service {
-    private static final String TAG = "RemoteAidlBinderService";
-    private IRemoteCallBack remoteCallBack;
-    private IBinder binder = new IRemoteService.Stub() {
+public class RemoteCustomHelloService extends Service {
+    private static final String TAG = "RemoteCustomHelloService";
+    private IBinder binder = new IHelloService.Stub() {
 
         @Override
-        public int getPid() throws RemoteException {
-            LogUtils.d(TAG, "getPid ");
-            return Process.myPid();
-        }
-
-        @Override
-        public void setCallBack(IRemoteCallBack remoteCallBack) throws RemoteException {
-            LogUtils.d(TAG, "setCallBack " + remoteCallBack.hashCode());
-            RemoteAidlBinderService.this.remoteCallBack = remoteCallBack;
-        }
-
-        @Override
-        public Student upgradeStudent(Student student) throws RemoteException {
-            LogUtils.d(TAG, "upgradeStudent " +Thread.currentThread().getName()+"-" + student.toString());
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            student.name = "升级" + student.name;
-            LogUtils.d(TAG, "upgradeStudent completed" + student.toString());
-            return student;
-        }
-
-        @Override
-        public void insertStudent(Student student) throws RemoteException {
-            LogUtils.d(TAG, "insertStudent " + student.toString());
-            if (remoteCallBack != null) {
-                remoteCallBack.onNewStudent(student);
-            }
-        }
-
-        @Override
-        public int calculate(int a, int b) throws RemoteException {
-            LogUtils.d(TAG, "calculate a=" + a + " b=" + b);
-            return a + b;
+        public String printMsg(String msg) throws RemoteException {
+            return msg+"我是自定义的";
         }
     };
 
