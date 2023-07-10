@@ -48,7 +48,9 @@ dependencies {
 //    implementation "com.squareup.okio:okio:${OKIO_VERSION}"
     implementation "com.squareup.retrofit2:retrofit:${RETROFIT_VERSION}"
     implementation "com.squareup.retrofit2:converter-gson:${RETROFIT_VERSION}"
-    implementation "com.squareup.retrofit2:adapter-rxjava3:${RETROFIT_VERSION}"
+//    implementation "com.squareup.retrofit2:adapter-rxjava3:${RETROFIT_VERSION}"
+    implementation "io.reactivex.rxjava3:rxjava:${RXJAVA_VERSION}"
+    implementation "io.reactivex.rxjava3:rxandroid:${RXANDROID_VERSION}"
 }
 
 kapt {
