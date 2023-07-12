@@ -10,6 +10,7 @@
         android:roundIcon="@drawable/ic_common_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NotBadVideo"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".ThirdPartActivity"
@@ -27,6 +28,11 @@
         </activity>
         <activity
             android:name=".RxActivity"
+            android:theme="@style/MainTheme"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".GlideActivity"
             android:theme="@style/MainTheme"
             android:exported="true">
             <intent-filter>
