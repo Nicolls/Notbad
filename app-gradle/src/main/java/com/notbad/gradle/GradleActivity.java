@@ -1,0 +1,26 @@
+package com.notbad.gradle;
+
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.notbad.lib.common.LogUtils;
+
+public class GradleActivity extends AppCompatActivity {
+    private static String TAG = "GradleActivity";
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_gradle);
+
+    }
+
+    public void onTest(View view) {
+        LogUtils.d(TAG, "onTest");
+
+    }
+}
