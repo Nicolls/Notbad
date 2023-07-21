@@ -1,10 +1,11 @@
+import java.security.AccessControlContext
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
 }
-
 android {
     namespace 'com.notbad.gradle'
     compileSdk COMPILE_VERSION as int
@@ -44,9 +45,48 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${CONSTRAINT_LAYOUT_VERSION}"
     implementation "com.google.android.material:material:${MATERIAL_VERSION}"
     implementation project(":lib-common")
-
 }
 
 kapt {
     correctErrorTypes true
+}
+
+class Person{
+    String personName="lisi"
+    int personAge=18
+    String subPersonName="abc"
+    def printPerson(){
+        println("######name:${personName} age:${personAge}")
+    }
+    def printSubPerson(Closure closure){
+        closure.delegate=this
+        closure.setResolveStrategy(Closure.DELEGATE_FIRST)
+        return closure
+    }
+    def ccc(String xy){
+        personName = xy
+        println("@@@@ ${personName} age:${personAge}")
+    }
+}
+def person(Closure<Person> closure){
+    Person person = new Person()
+    closure.delegate = person
+    closure.setResolveStrategy(Closure.DELEGATE_FIRST)
+    return  closure
+}
+def hui=person {
+    ccc "MMMMM"
+    printSubPerson{
+        println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+        personAge = 33
+        printPerson()
+    }
+    printPerson()
+}
+
+task hhh{
+    doLast {
+        println("@@@@@@@@@@@@@@@@RRR")
+        hui()
+    }
 }
