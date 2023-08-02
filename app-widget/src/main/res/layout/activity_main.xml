@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.notbad.widget.view.MyRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:background="@android:color/holo_green_dark"
+    tools:context=".MainActivity">
+
+    <com.notbad.widget.view.MyLinearLayout
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:background="@android:color/holo_orange_dark"
+        >
+        <com.notbad.widget.view.MyView
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:background="@android:color/holo_red_dark"
+            />
+        <com.notbad.widget.view.HelloView
+            android:scrollbarStyle="insideInset"
+            android:layout_marginTop="10dp"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_blue_bright"
+            />
+    </com.notbad.widget.view.MyLinearLayout>
+
+</com.notbad.widget.view.MyRelativeLayout>

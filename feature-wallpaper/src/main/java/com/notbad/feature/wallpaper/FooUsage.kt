@@ -18,11 +18,11 @@ object FooUsage {
         fun getFoo():IFoo
     }
 
-    fun fooSay(context:Context){
-        val fooEntryPoint:FooEntryPoint = EntryPointAccessors.fromApplication(context.applicationContext)
-        val foo = fooEntryPoint.getFoo()
-        foo.say("enough")
-    }
+//    fun fooSay(context:Context){
+//        val fooEntryPoint:FooEntryPoint = EntryPointAccessors.fromApplication(context.applicationContext)
+//        val foo = fooEntryPoint.getFoo()
+//        foo.say("enough")
+//    }
 
 
 }

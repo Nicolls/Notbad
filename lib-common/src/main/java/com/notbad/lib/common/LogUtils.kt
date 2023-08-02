@@ -4,7 +4,7 @@ import android.util.Log
 import java.lang.Exception
 
 object LogUtils {
-    private const val PREF = "NotBad_"
+    private const val PREF = "#"
     @JvmStatic
     fun d(tag:String,msg:String) {
         Log.d("$PREF$tag",msg)
